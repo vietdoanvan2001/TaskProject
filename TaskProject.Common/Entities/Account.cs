@@ -11,7 +11,7 @@ namespace TaskProject.Common
         /// <summary>
         /// Tài khoản
         /// </summary>
-        public string UserName { get; set; }
+        public string UserName { get; set; } 
 
         /// <summary>
         /// Mật khẩu
