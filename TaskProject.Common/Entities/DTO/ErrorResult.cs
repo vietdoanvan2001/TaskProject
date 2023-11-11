@@ -1,0 +1,41 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TaskProject.Common
+{
+    public class ErrorResult
+    {
+        /// <summary>
+        /// Tên trường dữ liệu lỗi
+        /// </summary>
+        public String ErrorField { get; set; }
+
+        /// <summary>
+        /// Mã lỗi
+        /// </summary>
+        public ErrorCode ErrorCode { get; set; }
+
+        /// <summary>
+        /// Thông báo cho dev
+        /// </summary>
+        public string DevMsg { get; set; }
+
+        /// <summary>
+        /// Thông báo cho người dùng
+        /// </summary>
+        public string UserMsg { get; set; }
+
+        /// <summary>
+        /// ID phục vụ cho tìm lỗi nhanh (Sử dụng trong dự án)
+        /// </summary>
+        public string TradeId { get; set; }
+
+        /// <summary>
+        /// Mô tả chi tiết lỗi
+        /// </summary>
+        public object MoreInfor { get; set; }
+    }
+}
