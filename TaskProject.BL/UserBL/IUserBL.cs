@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskProject.BL.BaseBL;
 using TaskProject.Common;
+using TaskProject.Common.Entities;
 
 namespace TaskProject.BL
 {
@@ -16,5 +17,12 @@ namespace TaskProject.BL
         /// <param name="acc"></param>
         /// <returns></returns>
         public ServiceResult Login(Account acc);
+
+        /// <summary>
+        /// Lấy các user đang hoạt động
+        /// </summary>
+        /// <param name="acc"></param>
+        /// <returns></returns>
+        public ServiceResult getUser(UserFilterParam param);
     }
 }
