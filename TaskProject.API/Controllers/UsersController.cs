@@ -61,47 +61,13 @@ namespace TaskProject.API.Controllers
             }
         }
 
-        [HttpPost("aaaa")]
-        public IActionResult abc([FromBody] Account body)
-        {
-            var serviceResult = _userBL.Login(body);
-
-            if (serviceResult.IsSuccess == true)
-            {
-                return StatusCode(200, QueryResult.Success);
-            }
-            else
-            {
-                if (serviceResult.Data == Resource.Wrong_Account)
-                {
-                    return StatusCode(400, new ErrorResult
-                    {
-                        ErrorCode = ErrorCode.SqlReturnNull,
-                        DevMsg = Resource.Wrong_Account,
-                        UserMsg = Resource.Wrong_Account,
-                        TradeId = HttpContext.TraceIdentifier,
-                    });
-                }
-                else
-                {
-                    return StatusCode(500, new ErrorResult
-                    {
-                        ErrorCode = ErrorCode.SqlCatchException,
-                        DevMsg = Resource.ServiceResult_Exception,
-                        UserMsg = Resource.UserMsg_Exception,
-                        TradeId = HttpContext.TraceIdentifier,
-                    });
-                }
-            }
-        }
-
-        [HttpGet("GetActiveUsers")]
+        [HttpPost("GetActiveUsers")]
         public IActionResult getUser([FromBody] UserFilterParam param)
         {
             var serviceResult = _userBL.getUser(param);
             if (serviceResult.IsSuccess == true)
             {
-                return StatusCode(200, QueryResult.Success);
+                return StatusCode(200, serviceResult.Data);
             }
             else
             {
