@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TaskProject.BL.BaseBL;
 using TaskProject.Common;
+using TaskProject.Common.Entities;
 using TaskProject.Common.Funtions;
 using TaskProject.DL;
 using TaskProject.DL.BaseDL;
@@ -23,6 +24,18 @@ namespace TaskProject.BL
         {
             _userDL = userDL;
             _baseDL = baseDL;
+        }
+
+        /// <summary>
+        /// Lấy các user đang hoạt động
+        /// </summary>
+        /// <param name="acc"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public ServiceResult getUser(UserFilterParam param)
+        {
+            var result = _userDL.getUser(param);
+            return result;
         }
 
         /// <summary>

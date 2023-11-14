@@ -1,9 +1,11 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Exchange.WebServices.Data;
 using MySqlConnector;
 using TaskProject.BL;
 using TaskProject.Common;
+using TaskProject.Common.Entities;
 
 namespace TaskProject.API.Controllers
 {
@@ -59,6 +61,25 @@ namespace TaskProject.API.Controllers
             }
         }
 
+        [HttpPost("GetActiveUsers")]
+        public IActionResult getUser([FromBody] UserFilterParam param)
+        {
+            var serviceResult = _userBL.getUser(param);
+            if (serviceResult.IsSuccess == true)
+            {
+                return StatusCode(200, serviceResult.Data);
+            }
+            else
+            {
+                return StatusCode(500, new ErrorResult
+                {
+                    ErrorCode = ErrorCode.SqlCatchException,
+                    DevMsg = Resource.ServiceResult_Exception,
+                    UserMsg = Resource.UserMsg_Exception,
+                    TradeId = HttpContext.TraceIdentifier,
+                });
+            }
+        }
         #endregion
 
     }
