@@ -1,130 +1,25 @@
 ﻿using Dapper;
-using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using TaskProject.Common;
 using TaskProject.Common.Entities;
-using TaskProject.Common.Enums;
 using TaskProject.DL.BaseDL;
 
-namespace TaskProject.DL
+namespace TaskProject.DL.TaskDL
 {
-    public class UserDL : BaseDL<Users>, IUsersDL
+    public class TaskDL : BaseDL<Tasks>, ITaskDL
     {
-        public ServiceResult getUser(UserFilterParam param)
+        public ServiceResult getKanbanByProjectID(int id)
         {
             // chuẩn bị tên stored
-            String storedProcedureName = "Proc_Users_FilterUsers";
+            String storedProcedureName = "Proc_Task_GetByProjectID";
 
             //chuẩn bị tham số đầu vào
             var paprameters = new DynamicParameters();
-            paprameters.Add($"v_Status", param.Status);
-            paprameters.Add($"v_Where", param.Keyword);
-            paprameters.Add($"v_Limit", param.Limit);
-            paprameters.Add($"v_Offset", param.Offset);
-
-            //khởi tạo kết nối tới DB
-            var dbConnection = GetOpenConnection();
-
-            //thực hiện câu lệnh sql
-            try
-            {
-                var record = dbConnection.QueryMultiple(storedProcedureName, paprameters, commandType: System.Data.CommandType.StoredProcedure);
-
-                var customer = record.Read<Users>().ToList();
-                var amountData = record.Read<int>().First();
-                if(customer != null && customer.Any())
-                {
-                    foreach(var user in customer)
-                    {
-                        if(user.Status == (int)UserStatus.Waitting)
-                        {
-                            user.StatusName = Resource.Waitting;
-                        }
-                        else if (user.Status == (int)UserStatus.Active)
-                        {
-                            user.StatusName = Resource.Active;
-                        }
-                        else
-                        {
-                            user.StatusName = Resource.InActive;
-                        }
-                    }
-                }
-
-                //đóng kết nối tới db
-                dbConnection.Close();
-
-                var res = new Dictionary<string, object>{
-                    { "PageData", customer},
-                    { "Total", amountData },
-                    };
-
-                if (res != null)
-                {
-                    return new ServiceResult(true, res);
-                }
-                else
-                {
-                    return new ServiceResult(false, Resource.Wrong_Account);
-                }
-            }
-            catch (Exception)
-            {
-
-                return new ServiceResult(false, Resource.ServiceResult_Exception);
-            }
-        }
-
-        public ServiceResult Login(Account acc)
-        {
-            // chuẩn bị tên stored
-            String storedProcedureName = $"Proc_Users_Login";
-
-            //chuẩn bị tham số đầu vào
-            var paprameters = new DynamicParameters();
-            paprameters.Add($"v_UserName", acc.UserName);
-
-            //khởi tạo kết nối tới DB
-
-            var dbConnection = GetOpenConnection();
-
-
-            //thực hiện câu lệnh sql
-            try
-            {
-                Users record = dbConnection.QueryFirstOrDefault<Users>(storedProcedureName, paprameters, commandType: System.Data.CommandType.StoredProcedure);
-
-                dbConnection.Close();
-
-                if (record != null)
-                {
-                    return new ServiceResult(true, record);
-                }
-                else
-                {
-                    return new ServiceResult(false, Resource.Wrong_Account);
-                }
-            }
-            catch (Exception)
-            {
-
-                return new ServiceResult(false, Resource.ServiceResult_Exception);
-            }
-        }
-
-        public ServiceResult getUserByListID(string listID)
-        {
-            // chuẩn bị tên stored
-            String storedProcedureName = "Proc_Users_GetInListID";
-
-            //chuẩn bị tham số đầu vào
-            var paprameters = new DynamicParameters();
-            paprameters.Add($"v_ListID", listID);
+            paprameters.Add($"v_ProjectID", id);
 
             //khởi tạo kết nối tới DB
 
@@ -154,14 +49,25 @@ namespace TaskProject.DL
             }
         }
 
-        public ServiceResult getUserByID(Guid id)
+        public ServiceResult UpdateByID(Tasks data)
         {
             // chuẩn bị tên stored
-            String storedProcedureName = "Proc_Users_GetByUserID";
+            String storedProcedureName = "Proc_Tasks_Update";
 
             //chuẩn bị tham số đầu vào
             var paprameters = new DynamicParameters();
-            paprameters.Add($"v_UserID", id);
+            paprameters.Add($"v_TaskName", data.TaskName);
+            paprameters.Add($"v_StartDate", data.StartDate);
+            paprameters.Add($"v_EndDate", data.EndDate);
+            paprameters.Add($"v_AssigneeID", data.AssigneeID);
+            paprameters.Add($"v_AssigneeName", data.AssigneeName);
+            paprameters.Add($"v_AssigneeEmail", data.AssigneeEmail);
+            paprameters.Add($"v_ProjectID", data.ProjectID);
+            paprameters.Add($"v_KanbanID", data.KanbanID);
+            paprameters.Add($"v_Process", data.Process);
+            paprameters.Add($"v_Description", data.Description);
+            paprameters.Add($"v_FinishDate", data.FinishDate);
+            paprameters.Add($"v_TaskID", data.TaskID);
 
             //khởi tạo kết nối tới DB
 
@@ -171,7 +77,83 @@ namespace TaskProject.DL
             //thực hiện câu lệnh sql
             try
             {
-                var record = dbConnection.QueryFirstOrDefault<Users>(storedProcedureName, paprameters, commandType: System.Data.CommandType.StoredProcedure);
+                var record = dbConnection.Query(storedProcedureName, paprameters, commandType: System.Data.CommandType.StoredProcedure);
+
+                dbConnection.Close();
+
+                if (record != null)
+                {
+                    return new ServiceResult(true, record);
+                }
+                else
+                {
+                    return new ServiceResult(false, Resource.Wrong_Account);
+                }
+            }
+            catch (Exception)
+            {
+
+                return new ServiceResult(false, Resource.ServiceResult_Exception);
+            }
+        }
+
+        public ServiceResult UpdateKanban(UpdateTaskProcessParam param)
+        {
+            // chuẩn bị tên stored
+            String storedProcedureName = "Proc_Tasks_UpdateKanban";
+
+            //chuẩn bị tham số đầu vào
+            var paprameters = new DynamicParameters();
+            paprameters.Add($"v_TaskID", param.TaskID);
+            paprameters.Add($"v_KanbanID", param.Process);
+
+            //khởi tạo kết nối tới DB
+
+            var dbConnection = GetOpenConnection();
+
+
+            //thực hiện câu lệnh sql
+            try
+            {
+                var record = dbConnection.Execute(storedProcedureName, paprameters, commandType: System.Data.CommandType.StoredProcedure);
+
+                dbConnection.Close();
+
+                if (record != null)
+                {
+                    return new ServiceResult(true, record);
+                }
+                else
+                {
+                    return new ServiceResult(false, Resource.Wrong_Account);
+                }
+            }
+            catch (Exception)
+            {
+
+                return new ServiceResult(false, Resource.ServiceResult_Exception);
+            }
+        }
+
+        public ServiceResult UpdateProcess(UpdateTaskProcessParam param)
+        {
+            // chuẩn bị tên stored
+            String storedProcedureName = "Proc_Tasks_UpdateProcess";
+
+            //chuẩn bị tham số đầu vào
+            var paprameters = new DynamicParameters();
+            paprameters.Add($"v_TaskID", param.TaskID);
+            paprameters.Add($"v_Process", param.Process);
+
+            //khởi tạo kết nối tới DB
+
+            var dbConnection = GetOpenConnection();
+
+
+            //thực hiện câu lệnh sql
+            try
+            {
+                var record = dbConnection.Execute(storedProcedureName, paprameters, commandType: System.Data.CommandType.StoredProcedure);
 
                 dbConnection.Close();
 

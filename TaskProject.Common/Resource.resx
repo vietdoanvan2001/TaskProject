@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Active" xml:space="preserve">
+    <value>Đang hoạt động</value>
+  </data>
   <data name="DevMsg_Exception" xml:space="preserve">
     <value>Catch an exception</value>
     <comment>Lỗi trả về cho Dev khi dính exception</comment>
@@ -133,6 +136,9 @@
     <value>Dữ liệu không được để trống</value>
     <comment>Lỗi validate các trường bắt buộc nhập</comment>
   </data>
+  <data name="InActive" xml:space="preserve">
+    <value>Ngừng hoạt động</value>
+  </data>
   <data name="ServiceResult_Exception" xml:space="preserve">
     <value>Execute SQL Command catch Exception</value>
     <comment>Lỗi trả về khi thực hiện câu lệnh SQL bắt được ngoại lệ</comment>
@@ -148,6 +154,9 @@
   <data name="UserMsg_Exception" xml:space="preserve">
     <value>Có lỗi xảy ra, vui lòng liên hệ trung tâm tư vấn!</value>
     <comment>Lỗi trả về cho người dùng khi dính ngoại lệ</comment>
+  </data>
+  <data name="Waitting" xml:space="preserve">
+    <value>Chờ duyệt</value>
   </data>
   <data name="WrongFormat" xml:space="preserve">
     <value>sai định dạng</value>

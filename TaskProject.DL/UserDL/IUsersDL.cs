@@ -14,5 +14,9 @@ namespace TaskProject.DL
         public ServiceResult Login(Account acc);
 
         public ServiceResult getUser(UserFilterParam param);
+
+        public ServiceResult getUserByListID(string listID);
+
+        public ServiceResult getUserByID(Guid id);
     }
 }

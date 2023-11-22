@@ -69,6 +69,40 @@ namespace TaskProject.DL.BaseDL
             }
         }
 
+        public ServiceResult GetByID(int id)
+        {
+            //chuẩn bị tên stored
+            String storedProcedureName = $"Proc_{typeof(T).Name}_GetByID";
+
+            //chuẩn bị tham số đầu vào
+            var paprameters = new DynamicParameters();
+            paprameters.Add($"v_{typeof(T).Name}Id", id);
+
+            var dbConnection = GetOpenConnection();
+
+            //thực hiện câu lệnh sql
+            //var trans = dbConnection.BeginTransaction();
+            try
+            {
+
+                var response = dbConnection.QueryFirstOrDefault<T>(storedProcedureName, paprameters, commandType: System.Data.CommandType.StoredProcedure);
+
+                dbConnection.Close();
+                if (response != null)
+                {
+                    return new ServiceResult(true, response);
+                }
+                else
+                {
+                    return new ServiceResult(false, Resource.ServiceResult_Fail);
+                }
+            }
+            catch (Exception)
+            {
+                return new ServiceResult(false, Resource.ServiceResult_Exception);
+            }
+        }
+
         /// <summary>
         /// Xoá bản ghi theo id 
         /// </summary>
@@ -78,6 +112,40 @@ namespace TaskProject.DL.BaseDL
         {
             //chuẩn bị tên stored
             String storedProcedureName = $"Proc_{typeof(T).Name}_DeleteById";
+
+            //chuẩn bị tham số đầu vào
+            var paprameters = new DynamicParameters();
+            paprameters.Add($"v_{typeof(T).Name}Id", recordId);
+
+            var dbConnection = GetOpenConnection();
+
+            //thực hiện câu lệnh sql
+            try
+            {
+                var affectedRow = dbConnection.Execute(storedProcedureName, paprameters, commandType: System.Data.CommandType.StoredProcedure);
+
+                dbConnection.Close();
+
+                if (affectedRow > 0)
+                {
+                    return new ServiceResult(true, Resource.ServiceResult_Success);
+                }
+                else
+                {
+                    return new ServiceResult(false, Resource.ServiceResult_Fail);
+                }
+            }
+            catch (Exception)
+            {
+
+                return new ServiceResult(false, Resource.ServiceResult_Exception);
+            }
+        }
+
+        public ServiceResult DeleteRecordByIntId(int recordId)
+        {
+            //chuẩn bị tên stored
+            String storedProcedureName = $"Proc_{typeof(T).Name}_DeleteByIntId";
 
             //chuẩn bị tham số đầu vào
             var paprameters = new DynamicParameters();
@@ -306,6 +374,8 @@ namespace TaskProject.DL.BaseDL
                 return new ServiceResult(false, Resource.ServiceResult_Exception);
             }
         }
+
+        
         #endregion
     }
 }

@@ -200,6 +200,55 @@ namespace TaskProject.API.Controllers
             }
         }
 
+        [HttpDelete("deleteByIntID/{id}")]
+        public IActionResult DeleteRecordByIntId([FromRoute] int id)
+        {
+            try
+            {
+                var serviceResult = _baseBL.DeleteRecordByIntId(id);
+
+
+                if (serviceResult.IsSuccess == true)
+                {
+                    return StatusCode(200, QueryResult.Success);
+                }
+                else
+                {
+                    if (serviceResult.Data == Resource.ServiceResult_Fail)
+                    {
+                        return StatusCode(204, new ErrorResult
+                        {
+                            ErrorCode = ErrorCode.SqlReturnNull,
+                            DevMsg = Resource.ServiceResult_Fail,
+                            UserMsg = Resource.UserMsg_Exception,
+                            TradeId = HttpContext.TraceIdentifier,
+                        });
+                    }
+                    else
+                    {
+                        return StatusCode(500, new ErrorResult
+                        {
+                            ErrorCode = ErrorCode.SqlCatchException,
+                            DevMsg = Resource.ServiceResult_Exception,
+                            UserMsg = Resource.UserMsg_Exception,
+                            TradeId = HttpContext.TraceIdentifier,
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, new ErrorResult
+                {
+                    ErrorCode = ErrorCode.Exception,
+                    DevMsg = Resource.DevMsg_Exception,
+                    UserMsg = Resource.UserMsg_Exception,
+                    TradeId = HttpContext.TraceIdentifier,
+                });
+            }
+        }
+
         /// <summary>
         /// API lấy toàn bộ danh sách bản ghi
         /// </summary>
@@ -253,6 +302,54 @@ namespace TaskProject.API.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetByID([FromRoute] int id)
+        {
+            try
+            {
+
+                var serviceResult = _baseBL.GetByID(id);
+
+                if (serviceResult.IsSuccess == true)
+                {
+                    return StatusCode(200, serviceResult.Data);
+                }
+                else
+                {
+                    if (serviceResult.Data == Resource.ServiceResult_Fail)
+                    {
+                        return StatusCode(204, new ErrorResult
+                        {
+                            ErrorCode = ErrorCode.SqlReturnNull,
+                            DevMsg = Resource.ServiceResult_Fail,
+                            UserMsg = Resource.UserMsg_Exception,
+                            TradeId = HttpContext.TraceIdentifier,
+                        });
+                    }
+                    else
+                    {
+                        return StatusCode(500, new ErrorResult
+                        {
+                            ErrorCode = ErrorCode.SqlCatchException,
+                            DevMsg = Resource.ServiceResult_Exception,
+                            UserMsg = Resource.UserMsg_Exception,
+                            TradeId = HttpContext.TraceIdentifier,
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, new ErrorResult
+                {
+                    ErrorCode = ErrorCode.Exception,
+                    DevMsg = Resource.DevMsg_Exception,
+                    UserMsg = Resource.UserMsg_Exception,
+                    TradeId = HttpContext.TraceIdentifier,
+                });
+            }
+        }
         #endregion
     }
 }

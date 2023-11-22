@@ -1,8 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using TaskProject.BL;
 using TaskProject.BL.BaseBL;
+using TaskProject.BL.KanbanBL;
+using TaskProject.BL.ProjectBL;
+using TaskProject.BL.TaskBL;
 using TaskProject.DL;
 using TaskProject.DL.BaseDL;
+using TaskProject.DL.KanbanDL;
+using TaskProject.DL.ProjectDL;
+using TaskProject.DL.TaskDL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +28,12 @@ builder.Services.AddCors(p => p.AddPolicy("MyCors", build =>
 //Dependency injection
 builder.Services.AddScoped<IUserBL, UserBL>();
 builder.Services.AddScoped<IUsersDL, UserDL>();
+builder.Services.AddScoped<IProjectBL, ProjectBL>();
+builder.Services.AddScoped<IProjectDL, ProjectDL>();
+builder.Services.AddScoped<IKanbanBL, KanbanBL>();
+builder.Services.AddScoped<IKanbanDL, KanbanDL>();
+builder.Services.AddScoped<ITaskBL, TaskBL>();
+builder.Services.AddScoped<ITaskDL, TaskDL>();
 builder.Services.AddScoped(typeof(IBaseBL<>), typeof(BaseBL<>));
 builder.Services.AddScoped(typeof(IBaseDL<>), typeof(BaseDL<>));
 
