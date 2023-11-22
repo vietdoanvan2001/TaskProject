@@ -16,6 +16,8 @@ namespace TaskProject.DL.BaseDL
         /// <returns></returns>
         public IDbConnection GetOpenConnection();
 
+        public ServiceResult GetByID(int id);
+
         /// <summary>
         /// Lấy tất cả các bản ghi
         /// </summary>
@@ -43,6 +45,7 @@ namespace TaskProject.DL.BaseDL
         /// <param name="recordId">id bản ghi muốn xoá</param>
         /// <returns>trạng thái thực hiện câu lệnh sql</returns>
         public ServiceResult DeleteRecordById(Guid recordId);
+        public ServiceResult DeleteRecordByIntId(int recordId);
 
         /// <summary>
         /// Kiểm tra id đã xuất hiện trong DB chưa

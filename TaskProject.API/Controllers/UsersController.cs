@@ -61,10 +61,50 @@ namespace TaskProject.API.Controllers
             }
         }
 
-        [HttpPost("GetActiveUsers")]
+        [HttpPost("GetFilterUsers")]
         public IActionResult getUser([FromBody] UserFilterParam param)
         {
             var serviceResult = _userBL.getUser(param);
+            if (serviceResult.IsSuccess == true)
+            {
+                return StatusCode(200, serviceResult.Data);
+            }
+            else
+            {
+                return StatusCode(500, new ErrorResult
+                {
+                    ErrorCode = ErrorCode.SqlCatchException,
+                    DevMsg = Resource.ServiceResult_Exception,
+                    UserMsg = Resource.UserMsg_Exception,
+                    TradeId = HttpContext.TraceIdentifier,
+                });
+            }
+        }
+
+        [HttpPost("GetByListID")]
+        public IActionResult getUserByListID([FromBody] MultipleParams param)
+        {
+            var serviceResult = _userBL.getUserByListID(param.listID);
+            if (serviceResult.IsSuccess == true)
+            {
+                return StatusCode(200, serviceResult.Data);
+            }
+            else
+            {
+                return StatusCode(500, new ErrorResult
+                {
+                    ErrorCode = ErrorCode.SqlCatchException,
+                    DevMsg = Resource.ServiceResult_Exception,
+                    UserMsg = Resource.UserMsg_Exception,
+                    TradeId = HttpContext.TraceIdentifier,
+                });
+            }
+        }
+
+        [HttpGet("GetByID/{id}")]
+        public IActionResult getUserByID([FromRoute] Guid id)
+        {
+            var serviceResult = _userBL.getUserByID(id);
             if (serviceResult.IsSuccess == true)
             {
                 return StatusCode(200, serviceResult.Data);

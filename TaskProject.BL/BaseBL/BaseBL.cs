@@ -39,6 +39,11 @@ namespace TaskProject.BL.BaseBL
             return _baseDL.GetAllRecords();
         }
 
+        public ServiceResult GetByID(int id)
+        {
+            return _baseDL.GetByID(id);
+        }
+
         /// <summary>
         /// Xoá bản ghi theo id 
         /// </summary>
@@ -47,6 +52,11 @@ namespace TaskProject.BL.BaseBL
         public ServiceResult DeleteRecordById(Guid recordId)
         {
             return _baseDL.DeleteRecordById(recordId);
+        }
+
+        public ServiceResult DeleteRecordByIntId(int recordId)
+        {
+            return _baseDL.DeleteRecordByIntId(recordId);
         }
 
         /// <summary>
@@ -173,6 +183,7 @@ namespace TaskProject.BL.BaseBL
         /// <param name="record"></param>
         /// <param name="recordId"></param>
         public virtual void InsertDetailData(T record, Guid id) { }
+
         #endregion
     }
 }

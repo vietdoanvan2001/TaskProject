@@ -38,6 +38,18 @@ namespace TaskProject.BL
             return result;
         }
 
+        public ServiceResult getUserByID(Guid id)
+        {
+            var result = _userDL.getUserByID(id);
+            return result;
+        }
+
+        public ServiceResult getUserByListID(string listID)
+        {
+            var result = _userDL.getUserByListID(listID);
+            return result;
+        }
+
         /// <summary>
         /// Đăng nhập
         /// </summary>
@@ -98,7 +110,7 @@ namespace TaskProject.BL
                             ErrorField = propertyName,
                             ErrorCode = ErrorCode.DuplicateCode,
                             DevMsg = Resource.DevMsg_ValidateFailed,
-                            UserMsg = propertyName + "" + Resource.Duplicate,
+                            UserMsg = Resource.Duplicate,
 
                         });
                     }

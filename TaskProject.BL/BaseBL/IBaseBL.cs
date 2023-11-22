@@ -16,6 +16,8 @@ namespace TaskProject.BL.BaseBL
         /// <returns>Danh sách toàn bộ các bản ghi</returns>
         public ServiceResult GetAllRecords();
 
+        public ServiceResult GetByID(int id);
+
         /// <summary>
         /// Thêm mới thông tin bản ghi
         /// </summary>
@@ -38,6 +40,7 @@ namespace TaskProject.BL.BaseBL
         /// <param name="recordId">id bản ghi muốn xoá</param>
         /// <returns>trạng thái thực hiện câu lệnh sql</returns>
         public ServiceResult DeleteRecordById(Guid recordId);
+        public ServiceResult DeleteRecordByIntId(int recordId);
 
     }
 }

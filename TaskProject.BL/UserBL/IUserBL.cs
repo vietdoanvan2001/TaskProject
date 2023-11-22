@@ -24,5 +24,8 @@ namespace TaskProject.BL
         /// <param name="acc"></param>
         /// <returns></returns>
         public ServiceResult getUser(UserFilterParam param);
+
+        public ServiceResult getUserByListID(string listID);
+        public ServiceResult getUserByID(Guid id);
     }
 }

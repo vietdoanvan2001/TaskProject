@@ -61,6 +61,15 @@ namespace TaskProject.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đang hoạt động.
+        /// </summary>
+        public static string Active {
+            get {
+                return ResourceManager.GetString("Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Catch an exception.
         /// </summary>
         public static string DevMsg_Exception {
@@ -97,6 +106,15 @@ namespace TaskProject.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ngừng hoạt động.
+        /// </summary>
+        public static string InActive {
+            get {
+                return ResourceManager.GetString("InActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Execute SQL Command catch Exception.
         /// </summary>
         public static string ServiceResult_Exception {
@@ -129,6 +147,15 @@ namespace TaskProject.Common {
         public static string UserMsg_Exception {
             get {
                 return ResourceManager.GetString("UserMsg_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chờ duyệt.
+        /// </summary>
+        public static string Waitting {
+            get {
+                return ResourceManager.GetString("Waitting", resourceCulture);
             }
         }
         
