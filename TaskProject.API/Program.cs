@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using TaskProject.BL;
 using TaskProject.BL.BaseBL;
 using TaskProject.BL.KanbanBL;
@@ -24,6 +27,19 @@ builder.Services.AddCors(p => p.AddPolicy("MyCors", build =>
 {
     build.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
 }));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
 
 //Dependency injection
 builder.Services.AddScoped<IUserBL, UserBL>();
@@ -58,8 +74,18 @@ app.UseHttpsRedirection();
 
 app.UseCors("MyCors");
 
-app.UseAuthorization();
+//app.UseAuthentication();
 
-app.MapControllers();
+//app.UseAuthorization();
+
+//app.MapControllers();
+
+app.UseAuthentication();
+app.UseRouting();
+app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.Run();

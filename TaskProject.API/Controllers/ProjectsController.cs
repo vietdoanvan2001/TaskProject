@@ -37,5 +37,25 @@ namespace TaskProject.API.Controllers
                 });
             }
         }
+
+        [HttpGet("GetByUserID/{id}")]
+        public IActionResult getByUserID([FromRoute] Guid id)
+        {
+            var serviceResult = _projectBL.GetByUserID(id);
+            if (serviceResult.IsSuccess == true)
+            {
+                return StatusCode(200, serviceResult.Data);
+            }
+            else
+            {
+                return StatusCode(500, new ErrorResult
+                {
+                    ErrorCode = ErrorCode.SqlCatchException,
+                    DevMsg = Resource.ServiceResult_Exception,
+                    UserMsg = Resource.UserMsg_Exception,
+                    TradeId = HttpContext.TraceIdentifier,
+                });
+            }
+        }
     }
 }

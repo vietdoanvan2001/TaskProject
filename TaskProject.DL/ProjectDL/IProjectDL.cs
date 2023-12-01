@@ -12,5 +12,7 @@ namespace TaskProject.DL.ProjectDL
     public interface IProjectDL:IBaseDL<Project>
     {
         public ServiceResult UpdateByID(Project data);
+
+        public ServiceResult GetByUserID(Guid id);
     }
 }

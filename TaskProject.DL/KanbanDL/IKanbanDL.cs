@@ -11,7 +11,7 @@ namespace TaskProject.DL.KanbanDL
 {
     public interface IKanbanDL:IBaseDL<Kanban>
     {
-        public ServiceResult getKanbanByProjectID(int  projectID);
+        public ServiceResult getKanbanByProjectID(int idProject, Guid userID);
         public ServiceResult UpdateByID(Kanban  data);
 
         public ServiceResult UpdateSortOrder(KanbanSortOrderParam param);

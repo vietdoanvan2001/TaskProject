@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Buffers.Text;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -13,17 +17,20 @@ using TaskProject.DL;
 using TaskProject.DL.BaseDL;
 using static TaskProject.Common.Attibutes.Attibutes;
 
+
 namespace TaskProject.BL
 {
     public class UserBL : BaseBL<Users>, IUserBL
     {
         public IUsersDL _userDL;
         public IBaseDL<Users> _baseDL;
+        private IConfiguration _configuration;
 
-        public UserBL(IUsersDL userDL, IBaseDL<Users> baseDL) : base(userDL)
+        public UserBL(IUsersDL userDL, IBaseDL<Users> baseDL, IConfiguration configuration) : base(userDL)
         {
             _userDL = userDL;
             _baseDL = baseDL;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -65,7 +72,12 @@ namespace TaskProject.BL
                 Users user = (Users)result.Data;
                 if(encode.VerifyPassword(acc.Password, user.Password))
                 {
-                    return new ServiceResult(true, user);
+                    var temp = new 
+                    {
+                        data = user,
+                        token = GenarateToken(user)
+                    };
+                    return new ServiceResult(true, temp);
                 }
                 else
                 {
@@ -74,6 +86,53 @@ namespace TaskProject.BL
             }
             return result;
 
+        }
+
+        //public string GenarateToken(Users user)
+        //{
+        //    // Khóa bí mật để ký token (thay thế bằng khóa thực tế trong ứng dụng thực)
+        //    string secretKey = "TheRandomKeyCreatedByDoanVanViet";
+        //    var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey));
+
+        //    // Tạo thông tin tuyển dụng
+        //    var claims = new[]
+        //    {
+        //    new Claim(JwtRegisteredClaimNames.Name, user.FullName),
+        //    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+        //    new Claim("UserID", user.Id.ToString())
+        //};
+
+        //    // Tạo token
+        //    var token = new JwtSecurityToken(
+        //        issuer: "http://localhost:8080/",        // Địa chỉ phát hành token
+        //        audience: "http://localhost:8080/",    // Địa chỉ sử dụng token
+        //        claims: claims,
+        //        expires: DateTime.UtcNow.AddMinutes(2),  // Thời điểm hết hạn của token
+        //        signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+        //    );
+
+        //    // Chuyển đổi token thành chuỗi JWT
+        //    var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+        //    return jwtToken;
+        //}
+
+        public string GenarateToken(Users user)
+        {
+            // Tạo thông tin tuyển dụng
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Name, user.FullName),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim("UserID", user.Id.ToString()) };
+            var securitykey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var credentials = new SigningCredentials(securitykey, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                _configuration["jwt:issuer"], _configuration["jwt:audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(1),
+                signingCredentials: credentials);
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         #region Override
@@ -157,6 +216,50 @@ namespace TaskProject.BL
             }
 
             return validateFailuresCustom;
+        }
+
+        public ServiceResult DeleteByListID(string listID)
+        {
+            var res = _userDL.DeleteByListID(listID);
+            return res;
+        }
+
+        public ServiceResult UpdateStatus(UpdateUserStatus param)
+        {
+            var res = _userDL.UpdateStatus(param);
+            return res;
+        }
+
+        public ServiceResult AddToTrash(UpdateUserStatus param)
+        {
+            var res = _userDL.AddToTrash(param);
+            return res;
+        }
+
+
+
+        public ServiceResult GetUsersInTrash()
+        {
+            var res = _userDL.GetUsersInTrash();
+            return res;
+        }
+
+        public ServiceResult UpdatePassword(UpdatePasswordParam param)
+        {
+            var temp = new Account();
+            temp.UserName = param.UserName;
+            temp.Password = param.OldPassword;
+
+            var result = Login(temp);
+            if(result != null && !result.IsSuccess)
+            {
+                return result;
+            }
+            EncodeFns encode = new EncodeFns();
+            param.NewPassword = encode.HashPassword(param.NewPassword);
+            
+            var res = _userDL.UpdatePassword(param);
+            return res;
         }
         #endregion
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskProject.BL.KanbanBL;
 using TaskProject.BL.TaskBL;
@@ -17,10 +18,70 @@ namespace TaskProject.API.Controllers
             _taskBL = taskBL;
         }
 
-        [HttpGet("GetTaskByProjectID/{id}")]
-        public IActionResult getUser([FromRoute] int id)
+        [HttpGet("GetTaskByProjectID")]
+        public IActionResult getTaskByProjectID([FromQuery] int projectID, [FromQuery] Guid userID)
         {
-            var serviceResult = _taskBL.getKanbanByProjectID(id);
+            var serviceResult = _taskBL.GetTaskByProjectID(projectID, userID);
+            if (serviceResult.IsSuccess == true)
+            {
+                return StatusCode(200, serviceResult.Data);
+            }
+            else
+            {
+                return StatusCode(500, new ErrorResult
+                {
+                    ErrorCode = ErrorCode.SqlCatchException,
+                    DevMsg = Resource.ServiceResult_Exception,
+                    UserMsg = Resource.UserMsg_Exception,
+                    TradeId = HttpContext.TraceIdentifier,
+                });
+            }
+        }
+
+        [HttpGet("GetTaskByType/{id}")]
+        public IActionResult getTaskByType([FromRoute] int id)
+        {
+            var serviceResult = _taskBL.GetTaskByType(id);
+            if (serviceResult.IsSuccess == true)
+            {
+                return StatusCode(200, serviceResult.Data);
+            }
+            else
+            {
+                return StatusCode(500, new ErrorResult
+                {
+                    ErrorCode = ErrorCode.SqlCatchException,
+                    DevMsg = Resource.ServiceResult_Exception,
+                    UserMsg = Resource.UserMsg_Exception,
+                    TradeId = HttpContext.TraceIdentifier,
+                });
+            }
+        }
+
+        [HttpGet("GetUsersAmountTask/{projectID}")]
+        public IActionResult getUsersTask([FromRoute] int projectID)
+        {
+            var serviceResult = _taskBL.GetUsersTask(projectID);
+            if (serviceResult.IsSuccess == true)
+            {
+                return StatusCode(200, serviceResult.Data);
+            }
+            else
+            {
+                return StatusCode(500, new ErrorResult
+                {
+                    ErrorCode = ErrorCode.SqlCatchException,
+                    DevMsg = Resource.ServiceResult_Exception,
+                    UserMsg = Resource.UserMsg_Exception,
+                    TradeId = HttpContext.TraceIdentifier,
+                });
+            }
+        }
+
+        [HttpPost("GetUserTask")]
+        public IActionResult getUserTask([FromBody] GetUserTaskParam param)
+        {
+            var serviceResult = _taskBL.GetUserTask(param);
             if (serviceResult.IsSuccess == true)
             {
                 return StatusCode(200, serviceResult.Data);

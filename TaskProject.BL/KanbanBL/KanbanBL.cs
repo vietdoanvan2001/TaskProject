@@ -23,9 +23,9 @@ namespace TaskProject.BL.KanbanBL
             _baseDL = baseDL;
         }
 
-        public ServiceResult getKanbanByProjectID(int projectID)
+        public ServiceResult getKanbanByProjectID(int idProject, Guid userID)
         {
-            var result = _kanbanDL.getKanbanByProjectID(projectID);
+            var result = _kanbanDL.getKanbanByProjectID(idProject, userID);
             return result;
         }
 

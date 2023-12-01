@@ -170,4 +170,7 @@
     <value>Tài khoản hoặc mật khẩu không chính xác</value>
     <comment>Tài khoản hoặc mật khẩu không chính xác</comment>
   </data>
+  <data name="Wrong_Pass" xml:space="preserve">
+    <value>Mật khẩu không chính xác</value>
+  </data>
 </root>

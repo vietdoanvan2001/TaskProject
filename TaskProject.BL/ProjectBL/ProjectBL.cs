@@ -23,6 +23,12 @@ namespace TaskProject.BL.ProjectBL
             _baseDL = baseDL;
         }
 
+        public ServiceResult GetByUserID(Guid id)
+        {
+            var res = _projectDL.GetByUserID(id);
+            return res;
+        }
+
         public ServiceResult UpdateByID(Project data)
         {
             var res = _projectDL.UpdateByID(data);

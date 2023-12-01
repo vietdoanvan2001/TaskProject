@@ -110,10 +110,10 @@ namespace TaskProject.DL
                     return new ServiceResult(false, Resource.Wrong_Account);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
-                return new ServiceResult(false, Resource.ServiceResult_Exception);
+                return new ServiceResult(false, e);
             }
         }
 
@@ -172,6 +172,190 @@ namespace TaskProject.DL
             try
             {
                 var record = dbConnection.QueryFirstOrDefault<Users>(storedProcedureName, paprameters, commandType: System.Data.CommandType.StoredProcedure);
+
+                dbConnection.Close();
+
+                if (record != null)
+                {
+                    return new ServiceResult(true, record);
+                }
+                else
+                {
+                    return new ServiceResult(false, Resource.Wrong_Account);
+                }
+            }
+            catch (Exception)
+            {
+
+                return new ServiceResult(false, Resource.ServiceResult_Exception);
+            }
+        }
+
+        public ServiceResult DeleteByListID(string listID)
+        {
+            // chuẩn bị tên stored
+            String storedProcedureName = "Proc_Users_MultipleDelete";
+
+            //chuẩn bị tham số đầu vào
+            var paprameters = new DynamicParameters();
+            paprameters.Add("v_ListUserID", listID);
+
+            //khởi tạo kết nối tới DB
+
+            var dbConnection = GetOpenConnection();
+
+
+            //thực hiện câu lệnh sql
+            try
+            {
+                var record = dbConnection.Execute(storedProcedureName, paprameters, commandType: System.Data.CommandType.StoredProcedure);
+
+                dbConnection.Close();
+
+                if (record != null)
+                {
+                    return new ServiceResult(true, record);
+                }
+                else
+                {
+                    return new ServiceResult(false, Resource.Wrong_Account);
+                }
+            }
+            catch (Exception)
+            {
+
+                return new ServiceResult(false, Resource.ServiceResult_Exception);
+            }
+        }
+
+        public ServiceResult UpdateStatus(UpdateUserStatus param)
+        {
+            // chuẩn bị tên stored
+            String storedProcedureName = "Proc_Users_UpdateStatus";
+
+            //chuẩn bị tham số đầu vào
+            var paprameters = new DynamicParameters();
+            paprameters.Add($"v_ListUserID", param.ListID);
+            paprameters.Add($"v_Status", param.Status);
+
+            //khởi tạo kết nối tới DB
+
+            var dbConnection = GetOpenConnection();
+
+
+            //thực hiện câu lệnh sql
+            try
+            {
+                var record = dbConnection.Execute(storedProcedureName, paprameters, commandType: System.Data.CommandType.StoredProcedure);
+
+                dbConnection.Close();
+
+                if (record != null)
+                {
+                    return new ServiceResult(true, record);
+                }
+                else
+                {
+                    return new ServiceResult(false, Resource.Wrong_Account);
+                }
+            }
+            catch (Exception)
+            {
+
+                return new ServiceResult(false, Resource.ServiceResult_Exception);
+            }
+        }
+
+        public ServiceResult AddToTrash(UpdateUserStatus param)
+        {
+            // chuẩn bị tên stored
+            String storedProcedureName = "Proc_Users_AddToTrash";
+
+            //chuẩn bị tham số đầu vào
+            var paprameters = new DynamicParameters();
+            paprameters.Add("v_ListUserID", param.ListID);
+            paprameters.Add("v_Status", param.Status);
+
+            //khởi tạo kết nối tới DB
+
+            var dbConnection = GetOpenConnection();
+
+
+            //thực hiện câu lệnh sql
+            try
+            {
+                var record = dbConnection.Execute(storedProcedureName, paprameters, commandType: System.Data.CommandType.StoredProcedure);
+
+                dbConnection.Close();
+
+                if (record != null)
+                {
+                    return new ServiceResult(true, record);
+                }
+                else
+                {
+                    return new ServiceResult(false, Resource.Wrong_Account);
+                }
+            }
+            catch (Exception)
+            {
+
+                return new ServiceResult(false, Resource.ServiceResult_Exception);
+            }
+        }
+
+        public ServiceResult GetUsersInTrash()
+        {
+            // chuẩn bị tên stored
+            String storedProcedureName = "Proc_Users_GetTrash";
+
+            //khởi tạo kết nối tới DB
+
+            var dbConnection = GetOpenConnection();
+
+
+            //thực hiện câu lệnh sql
+            try
+            {
+                var record = dbConnection.Query<Users>(storedProcedureName, commandType: System.Data.CommandType.StoredProcedure);
+
+                dbConnection.Close();
+
+                if (record != null)
+                {
+                    return new ServiceResult(true, record);
+                }
+                else
+                {
+                    return new ServiceResult(false, Resource.Wrong_Account);
+                }
+            }
+            catch (Exception)
+            {
+
+                return new ServiceResult(false, Resource.ServiceResult_Exception);
+            }
+        }
+
+        public ServiceResult UpdatePassword(UpdatePasswordParam param)
+        {
+            // chuẩn bị tên stored
+            String storedProcedureName = "Proc_Users_UpdatePassword";
+
+            //chuẩn bị tham số đầu vào
+            var paprameters = new DynamicParameters();
+            paprameters.Add($"v_Id", param.Id);
+            paprameters.Add($"v_NewPassword", param.NewPassword);
+
+            //khởi tạo kết nối tới DB
+
+            var dbConnection = GetOpenConnection();
+
+
+            //thực hiện câu lệnh sql
+            try
+            {
+                var record = dbConnection.Execute(storedProcedureName, paprameters, commandType: System.Data.CommandType.StoredProcedure);
 
                 dbConnection.Close();
 

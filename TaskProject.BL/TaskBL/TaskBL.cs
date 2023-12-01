@@ -23,10 +23,28 @@ namespace TaskProject.BL.TaskBL
             _baseDL = baseDL;
         }
 
-        public ServiceResult getKanbanByProjectID(int id)
+        public ServiceResult GetTaskByProjectID(int projectID, Guid userID)
         {
-            var result = _taskDL.getKanbanByProjectID(id);
+            var result = _taskDL.GetTaskByProjectID(projectID,userID);
             return result;
+        }
+
+        public ServiceResult GetTaskByType(int id)
+        {
+            var result = _taskDL.GetTaskByType(id);
+            return result;
+        }
+
+        public ServiceResult GetUsersTask(int projectID)
+        {
+            var result = _taskDL.GetUsersTask(projectID);
+            return result;
+        }
+
+        public ServiceResult GetUserTask(GetUserTaskParam param)
+        {
+            var res = _taskDL.GetUserTask(param);
+            return res;
         }
 
         public ServiceResult UpdateByID(Tasks data)

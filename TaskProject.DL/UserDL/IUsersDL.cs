@@ -18,5 +18,15 @@ namespace TaskProject.DL
         public ServiceResult getUserByListID(string listID);
 
         public ServiceResult getUserByID(Guid id);
+
+        public ServiceResult DeleteByListID(string listID);
+
+        public ServiceResult UpdateStatus(UpdateUserStatus param);
+
+        public ServiceResult AddToTrash(UpdateUserStatus param);
+
+        public ServiceResult GetUsersInTrash();
+
+        public ServiceResult UpdatePassword(UpdatePasswordParam param);
     }
 }
