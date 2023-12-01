@@ -12,6 +12,44 @@ namespace TaskProject.DL.ProjectDL
 {
     public class ProjectDL : BaseDL<Project>, IProjectDL
     {
+        public ServiceResult GetByUserID(Guid id)
+        {
+            // chuẩn bị tên stored
+            String storedProcedureName = "Proc_Project_GetProjectByUserID";
+
+            //chuẩn bị tham số đầu vào
+            var paprameters = new DynamicParameters();
+            paprameters.Add("v_UserID", id);
+
+            //khởi tạo kết nối tới DB
+
+            var dbConnection = GetOpenConnection();
+
+
+            //thực hiện câu lệnh sql
+            try
+            {
+                var record = dbConnection.Query(storedProcedureName, paprameters, commandType: System.Data.CommandType.StoredProcedure);
+
+                dbConnection.Close();
+
+                if (record != null)
+                {
+                    return new ServiceResult(true, record);
+                }
+                else
+                {
+                    return new ServiceResult(false, Resource.Wrong_Account);
+                }
+            }
+            catch (Exception)
+            {
+
+                return new ServiceResult(false, Resource.ServiceResult_Exception);
+            }
+        
+    }
+
         public ServiceResult UpdateByID(Project data)
         {
             // chuẩn bị tên stored

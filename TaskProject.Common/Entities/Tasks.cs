@@ -33,5 +33,11 @@ namespace TaskProject.Common.Entities
         public int Process { get; set; }
 
         public string Description { get; set; }
+
+        public string ProjectName { get; set; }
+
+        public string ColumnName { get; set; }
+
+        public string Background { get; set; }
     }
 }

@@ -169,6 +169,15 @@ namespace TaskProject.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mật khẩu không chính xác.
+        /// </summary>
+        public static string Wrong_Pass {
+            get {
+                return ResourceManager.GetString("Wrong_Pass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to sai định dạng.
         /// </summary>
         public static string WrongFormat {

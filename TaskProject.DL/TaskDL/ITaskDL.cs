@@ -11,11 +11,17 @@ namespace TaskProject.DL.TaskDL
 {
     public interface ITaskDL:IBaseDL<Tasks>
     {
-        public ServiceResult getKanbanByProjectID(int id);
+        public ServiceResult GetTaskByProjectID(int projectID, Guid userID);
 
         public ServiceResult UpdateByID(Tasks data);
 
         public ServiceResult UpdateProcess(UpdateTaskProcessParam param);
         public ServiceResult UpdateKanban(UpdateTaskProcessParam param);
+
+        public ServiceResult GetUserTask(GetUserTaskParam param);
+
+        public ServiceResult GetTaskByType(int id);
+
+        public ServiceResult GetUsersTask(int projectID);
     }
 }

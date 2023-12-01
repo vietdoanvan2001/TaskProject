@@ -18,10 +18,10 @@ namespace TaskProject.API.Controllers
             _kanbanBL = kanbanBL;
         }
 
-        [HttpGet("GetKanbanByProjectID/{id}")]
-        public IActionResult getUser([FromRoute] int id)
+        [HttpGet("GetKanbanByProjectID")]
+        public IActionResult getUser([FromQuery] int idProject, [FromQuery] Guid userID)
         {
-            var serviceResult = _kanbanBL.getKanbanByProjectID(id);
+            var serviceResult = _kanbanBL.getKanbanByProjectID(idProject, userID);
             if (serviceResult.IsSuccess == true)
             {
                 return StatusCode(200, serviceResult.Data);

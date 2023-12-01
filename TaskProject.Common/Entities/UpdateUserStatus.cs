@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace TaskProject.Common.Entities
 {
-    public class MultipleParams
+    public class UpdateUserStatus
     {
-        public string listID { get; set; }
+        public int Status { get; set; }
 
+        public string ListID { get; set; }
     }
 }

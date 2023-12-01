@@ -34,5 +34,11 @@ namespace TaskProject.Common
 
         public string StatusName { get; set; }
 
+        public string Background { get; set; }
+
+        public int Positions { get; set; }
+
+        public int DeleteTypte { get ; set; }
+
     }
 }

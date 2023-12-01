@@ -11,7 +11,7 @@ namespace TaskProject.BL.KanbanBL
 {
     public interface IKanbanBL : IBaseBL<Kanban>
     {
-        public ServiceResult getKanbanByProjectID(int projectID);
+        public ServiceResult getKanbanByProjectID(int idProject, Guid userID);
 
         public ServiceResult UpdateByID(Kanban data);
 

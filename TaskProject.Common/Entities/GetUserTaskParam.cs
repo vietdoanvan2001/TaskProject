@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace TaskProject.Common.Entities
 {
-    public class MultipleParams
+    public class GetUserTaskParam
     {
-        public string listID { get; set; }
+        public Guid UserID { get; set; }
 
+        public int ProjectID { get; set; }
     }
 }

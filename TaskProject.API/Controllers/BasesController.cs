@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskProject.BL.BaseBL;
 using TaskProject.Common;
@@ -254,6 +255,7 @@ namespace TaskProject.API.Controllers
         /// </summary>
         /// <returns>Danh sách tất cả các bản ghi</returns>
         [HttpGet]
+        //[Authorize]
         public IActionResult GetAllRecords()
         {
             try

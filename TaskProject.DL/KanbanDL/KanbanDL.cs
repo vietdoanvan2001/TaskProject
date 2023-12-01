@@ -12,7 +12,7 @@ namespace TaskProject.DL.KanbanDL
 {
     public class KanbanDL : BaseDL<Kanban>, IKanbanDL
     {
-        public ServiceResult getKanbanByProjectID(int projectID)
+        public ServiceResult getKanbanByProjectID(int projectID, Guid userID)
         {
             // chuẩn bị tên stored
             String storedProcedureName = "Proc_Kanban_GetByProjectID";
@@ -41,6 +41,7 @@ namespace TaskProject.DL.KanbanDL
                         var papram = new DynamicParameters();
                         papram.Add("v_ProjectID", projectID);
                         papram.Add("v_KanbanID", item.KanbanID);
+                        papram.Add("v_UserID", userID);
 
                         var res = dbConnection.Query(stored, papram, commandType: System.Data.CommandType.StoredProcedure);
                         item.Tasks = res;
