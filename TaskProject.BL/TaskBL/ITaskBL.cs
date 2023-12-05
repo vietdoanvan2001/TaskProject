@@ -22,8 +22,9 @@ namespace TaskProject.BL.TaskBL
 
         public ServiceResult GetUserTask(GetUserTaskParam param);
 
-        public ServiceResult GetTaskByType(int id);
+        public ServiceResult GetTaskByType(int projectID, Guid userID);
 
-        public ServiceResult GetUsersTask(int projectID);
+        //public ServiceResult GetUsersAmountTask(int projectID);
+        public ServiceResult GetUsersAmountTask(int projectID, Guid userID);
     }
 }

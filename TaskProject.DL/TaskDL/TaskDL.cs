@@ -51,14 +51,15 @@ namespace TaskProject.DL.TaskDL
             }
         }
 
-        public ServiceResult GetTaskByType(int id)
+        public ServiceResult GetTaskByType(int projectID, Guid userID)
         {
             // chuẩn bị tên stored
             String storedProcedureName = "Proc_Tasks_GetType";
 
             //chuẩn bị tham số đầu vào
             var paprameters = new DynamicParameters();
-            paprameters.Add($"v_ProjectID", id);
+            paprameters.Add($"v_ProjectID", projectID);
+            paprameters.Add($"v_UserID", userID);
 
             //khởi tạo kết nối tới DB
 
@@ -105,7 +106,8 @@ namespace TaskProject.DL.TaskDL
             }
         }
 
-        public ServiceResult GetUsersTask(int projectID)
+        //public ServiceResult GetUsersAmountTask(int projectID)
+        public ServiceResult GetUsersAmountTask(int projectID, Guid userID)
         {
             // chuẩn bị tên stored
             String storedProcedureName = "Proc_Tasks_GetAmountByUser";
@@ -117,6 +119,7 @@ namespace TaskProject.DL.TaskDL
             //chuẩn bị tham số đầu vào
             var paprameters = new DynamicParameters();
             paprameters.Add($"v_ProjectID", projectID);
+            paprameters.Add($"v_UserID", userID);
 
             //thực hiện câu lệnh sql
             try

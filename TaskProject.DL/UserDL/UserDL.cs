@@ -171,7 +171,7 @@ namespace TaskProject.DL
             //thực hiện câu lệnh sql
             try
             {
-                var record = dbConnection.QueryFirstOrDefault<Users>(storedProcedureName, paprameters, commandType: System.Data.CommandType.StoredProcedure);
+                var record = dbConnection.QueryFirstOrDefault(storedProcedureName, paprameters, commandType: System.Data.CommandType.StoredProcedure);
 
                 dbConnection.Close();
 

@@ -38,10 +38,10 @@ namespace TaskProject.API.Controllers
             }
         }
 
-        [HttpGet("GetTaskByType/{id}")]
-        public IActionResult getTaskByType([FromRoute] int id)
+        [HttpGet("GetTaskByType")]
+        public IActionResult getTaskByType([FromQuery] int projectID, [FromQuery] Guid userID)
         {
-            var serviceResult = _taskBL.GetTaskByType(id);
+            var serviceResult = _taskBL.GetTaskByType(projectID, userID);
             if (serviceResult.IsSuccess == true)
             {
                 return StatusCode(200, serviceResult.Data);
@@ -58,10 +58,12 @@ namespace TaskProject.API.Controllers
             }
         }
 
-        [HttpGet("GetUsersAmountTask/{projectID}")]
-        public IActionResult getUsersTask([FromRoute] int projectID)
+        [HttpGet("GetUsersAmountTask")]
+        //public IActionResult getUsersAmountTask([FromRoute] int projectID)
+        public IActionResult getUsersAmountTask([FromQuery] int projectID, [FromQuery] Guid userID)
         {
-            var serviceResult = _taskBL.GetUsersTask(projectID);
+            //var serviceResult = _taskBL.GetUsersAmountTask(projectID);
+            var serviceResult = _taskBL.GetUsersAmountTask(projectID, userID);
             if (serviceResult.IsSuccess == true)
             {
                 return StatusCode(200, serviceResult.Data);

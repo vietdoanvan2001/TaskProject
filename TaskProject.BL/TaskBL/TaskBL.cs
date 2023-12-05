@@ -29,15 +29,17 @@ namespace TaskProject.BL.TaskBL
             return result;
         }
 
-        public ServiceResult GetTaskByType(int id)
+        public ServiceResult GetTaskByType(int projectID, Guid userID)
         {
-            var result = _taskDL.GetTaskByType(id);
+            var result = _taskDL.GetTaskByType(projectID, userID);
             return result;
         }
 
-        public ServiceResult GetUsersTask(int projectID)
+        //public ServiceResult GetUsersAmountTask(int projectID)
+        public ServiceResult GetUsersAmountTask(int projectID, Guid userID)
         {
-            var result = _taskDL.GetUsersTask(projectID);
+            //var result = _taskDL.GetUsersAmountTask(projectID);
+            var result = _taskDL.GetUsersAmountTask(projectID, userID);
             return result;
         }
 

@@ -38,7 +38,7 @@ namespace TaskProject.Common
 
         public int Positions { get; set; }
 
-        public int DeleteTypte { get ; set; }
+        public int DeleteType { get ; set; }
 
     }
 }
